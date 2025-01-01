@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './Task.module.scss'
 import { TaskType } from '../../types/Task.type';
+import PropTypes from 'prop-types';
 
 interface Props {
   task: TaskType
@@ -39,5 +40,17 @@ const Task = ({ task, onChangeCheck, onEditTask, onDeleteTask}: Props) => {
     </div>
   )
 };
+
+Task.propTypes = {
+  task: 
+    PropTypes.shape({
+      id: PropTypes.string.isRequired, 
+      taskName: PropTypes.string.isRequired, 
+      isDone: PropTypes.bool.isRequired,      
+    }),
+  onEditTask: PropTypes.func.isRequired,
+  onChangeCheck: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired
+}
 
 export default Task;

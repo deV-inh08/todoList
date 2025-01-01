@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import style from './TaskInput.module.scss'
 import { TaskType } from '../../types/Task.type'
@@ -33,5 +34,18 @@ const TaskInput = ({ onSubmit, onGetTask, value, currentTask, onEdit }: Props) =
     </form>
   )
 };
+
+
+TaskInput.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onGetTask: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  currentTask: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    taskName: PropTypes.string.isRequired,
+    isDone: PropTypes.bool.isRequired
+  }),
+  onEdit:  PropTypes.func.isRequired,
+}
 
 export default TaskInput

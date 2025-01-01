@@ -12,7 +12,6 @@ const TodoList = () => {
   const [taskList, setTaskList] = useState<TaskType[]>([]);
   const [currentTask, setCurrentTask] = useState<TaskType | null>(null)
 
-
   const filterTaskDone = taskList.filter((task) => task.isDone === true);
   const filterTaskNotDone = taskList.filter((task) => task.isDone !== true);
 
@@ -100,7 +99,7 @@ const TodoList = () => {
         return pre
       })
     }
-  }
+  };
 
   const handleDeleteTask = (id: string) => {
     if(currentTask) {
@@ -116,9 +115,27 @@ const TodoList = () => {
 
   return (
    <section className={style.todoList}>
-    <TaskInput onEdit={handleEdit} currentTask={currentTask} value={task.taskName} onSubmit={handlesubmit} onGetTask={getTask}></TaskInput>
-    <TaskList isDone={false} onChangeCheck={handleChecked} onDeleteTask={handleDeleteTask} onEditTask={handleStartEditTask} taskList={filterTaskNotDone}></TaskList>
-    <TaskList isDone={true} onChangeCheck={handleChecked} onDeleteTask={handleDeleteTask} onEditTask={handleStartEditTask} taskList={filterTaskDone}></TaskList>
+    <TaskInput 
+      onEdit={handleEdit} 
+      currentTask={currentTask} 
+      value={task.taskName} 
+      onSubmit={handlesubmit} 
+      onGetTask={getTask}>
+    </TaskInput>
+    <TaskList 
+      isDone={false} 
+      onChangeCheck={handleChecked} 
+      onDeleteTask={handleDeleteTask} 
+      onEditTask={handleStartEditTask} 
+      taskList={filterTaskNotDone}>
+    </TaskList>
+    <TaskList 
+      isDone={true} 
+      onChangeCheck={handleChecked} 
+      onDeleteTask={handleDeleteTask} 
+      onEditTask={handleStartEditTask} 
+      taskList={filterTaskDone}>
+    </TaskList>
    </section>
   )
 };

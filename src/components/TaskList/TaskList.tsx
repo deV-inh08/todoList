@@ -2,6 +2,7 @@ import React from 'react'
 import Task from '../Task/Task';
 import style from './TaskList.module.scss'
 import { TaskType } from '../../types/Task.type';
+import PropTypes from 'prop-types';
 
 interface Props {
   taskList: TaskType[]
@@ -23,5 +24,20 @@ interface Props {
     </div>
   )
 };
+
+
+TaskList.propTypes = {
+  taskList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired, 
+      taskName: PropTypes.string.isRequired, 
+      isDone: PropTypes.bool.isRequired,
+    })
+  ),
+  isDone: PropTypes.bool.isRequired,
+  onEditTask: PropTypes.func.isRequired,
+  onChangeCheck: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired
+}
 
 export default TaskList;
