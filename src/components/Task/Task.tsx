@@ -5,9 +5,10 @@ import { TaskType } from '../../types/Task.type';
 interface Props {
   task: TaskType
   onChangeCheck: (id: string, isDone: boolean) => void
+  onEditTask: (id: string) => void
 }
 
-const Task = ({ task, onChangeCheck }: Props) => {
+const Task = ({ task, onChangeCheck, onEditTask}: Props) => {
   
   return (
     <div className={style.task}>
@@ -28,10 +29,12 @@ const Task = ({ task, onChangeCheck }: Props) => {
             )
         }
       </div>
-      <div className={style.taskButtonBlock}>
-        <button className='editTask'>🖊️</button>
-        <button className='removeTask'>🗑️</button>
-      </div>
+      {!task.isDone && (
+         <div className={style.taskButtonBlock}>
+         <button onClick={() => onEditTask(task.id)} className='editTask'>🖊️</button>
+         <button className='removeTask'>🗑️</button>
+       </div>
+      )}
     </div>
   )
 };

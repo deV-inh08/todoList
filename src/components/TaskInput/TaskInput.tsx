@@ -1,21 +1,34 @@
 import React from 'react'
 
 import style from './TaskInput.module.scss'
+import { TaskType } from '../../types/Task.type'
 
 interface Props {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
-  onGetTaskList: (taskName: string) => void
+  onGetTask: (taskName: string) => void
   value: string
+  currentTask: TaskType | null
+  onEdit: (value: string) => void
 }
 
-const TaskInput = ({ onSubmit, onGetTaskList, value }: Props) => {
+const TaskInput = ({ onSubmit, onGetTask, value, currentTask, onEdit }: Props) => {
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(currentTask) {
+      onEdit(e.target.value);
+    } else {
+      onGetTask(e.target.value)
+    }
+  }
   
   return (
     <form onSubmit={onSubmit} className={style.taskInput}>
       <h1>To Do List Typescript</h1>
       <article>
-        <input value={value} onChange={(e) => {onGetTaskList(e.target.value)}} className={style.input} type="text" placeholder='caption goes here' />
-        <button type='submit' className={style.buttonAddTask}>➕</button>
+        <input value={currentTask ? currentTask.taskName : value} onChange={(e) => handleChangeInput(e)} className={style.input} type="text" placeholder='caption goes here' />
+        <button type='submit' className={style.buttonAddTask}>
+          {currentTask && value ? '✔️ ': '➕' }
+        </button>
       </article>
     </form>
   )

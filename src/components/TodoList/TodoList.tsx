@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { initialTask } from '../constants/Task';
 import { TaskType } from '../../types/Task.type';
 import TaskInput from '../TaskInput';
@@ -10,13 +10,13 @@ const TodoList = () => {
 
   const [task, setTask] = useState<TaskType>(initialTask);
   const [taskList, setTaskList] = useState<TaskType[]>([]);
-  const [isDone, setIsDone] = useState<boolean>(false);
+  const [currentTask, setCurrentTask] = useState<TaskType | null>(null)
 
 
   const filterTaskDone = taskList.filter((task) => task.isDone === true);
   const filterTaskNotDone = taskList.filter((task) => task.isDone !== true);
 
-  const getTaskList = (taskName: string) => {
+  const getTask = (taskName: string) => {
     setTask((pre) => ({
       ...pre,
       id: uuidv4(),
@@ -24,16 +24,28 @@ const TodoList = () => {
     }))
   }
 
+  useEffect(() => {
+    if(currentTask) {
+      setTask(currentTask)
+    }
+  }, [currentTask])
+
   const handlesubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if(!task.taskName) {
-      alert('Taskname is required')
+    e.preventDefault();
+    if(currentTask && !task.isDone) {
+      handleEndEditTask()
+      setCurrentTask(null)
     } else {
-      taskList.push(task)
+      if(!task.taskName) {
+        alert('Taskname is required')
+      } else {
+        taskList.push(task)
+      }
     }
     setTask(initialTask)
   }
 
+  // Update checked
   const handleChecked = (id: string, isDone: boolean) => {
     setTaskList((pre) => {
       const updated = pre.map((task) => {
@@ -49,13 +61,52 @@ const TodoList = () => {
     })
   }
 
+  // Edit Task
+  const handleStartEditTask = (id: string) => {
+    if(!task.isDone) {
+      setTaskList((pre) => {
+        pre.some((task) => {
+          if(task.id === id) {
+            setCurrentTask(task)
+          }
+        })
+        return pre
+      })
+    }
+  };
 
+  const handleEdit = (value: string) => {
+    setCurrentTask((pre) => {
+      if(pre) {
+        return (
+          {
+            ...pre,
+            taskName: value
+          }
+        )
+      }
+      return pre
+    })
+  };
+
+  const handleEndEditTask = () => {
+    if(currentTask) {
+      setTaskList((pre) => {
+        pre.some((task, index) => {
+          if(task.id === currentTask?.id) {
+            pre[index] = currentTask
+          }
+        })
+        return pre
+      })
+    }
+  }
 
   return (
    <section className={style.todoList}>
-    <TaskInput value={task.taskName} onSubmit={handlesubmit} onGetTaskList={getTaskList}></TaskInput>
-    <TaskList isDone={isDone}  onChangeCheck={handleChecked} taskList={filterTaskNotDone}></TaskList>
-    <TaskList isDone={isDone} onChangeCheck={handleChecked} taskList={filterTaskDone}></TaskList>
+    <TaskInput onEdit={handleEdit} currentTask={currentTask} value={task.taskName} onSubmit={handlesubmit} onGetTask={getTask}></TaskInput>
+    <TaskList isDone={false} onChangeCheck={handleChecked} onEditTask={handleStartEditTask} taskList={filterTaskNotDone}></TaskList>
+    <TaskList isDone={true} onChangeCheck={handleChecked}  onEditTask={handleStartEditTask} taskList={filterTaskDone}></TaskList>
    </section>
   )
 };
