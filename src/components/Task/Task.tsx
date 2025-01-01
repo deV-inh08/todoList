@@ -6,9 +6,10 @@ interface Props {
   task: TaskType
   onChangeCheck: (id: string, isDone: boolean) => void
   onEditTask: (id: string) => void
+  onDeleteTask: (id: string) => void
 }
 
-const Task = ({ task, onChangeCheck, onEditTask}: Props) => {
+const Task = ({ task, onChangeCheck, onEditTask, onDeleteTask}: Props) => {
   
   return (
     <div className={style.task}>
@@ -32,7 +33,7 @@ const Task = ({ task, onChangeCheck, onEditTask}: Props) => {
       {!task.isDone && (
          <div className={style.taskButtonBlock}>
          <button onClick={() => onEditTask(task.id)} className='editTask'>🖊️</button>
-         <button className='removeTask'>🗑️</button>
+         <button onClick={() => onDeleteTask(task.id)} className='removeTask'>🗑️</button>
        </div>
       )}
     </div>

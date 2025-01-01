@@ -102,11 +102,23 @@ const TodoList = () => {
     }
   }
 
+  const handleDeleteTask = (id: string) => {
+    if(currentTask) {
+      setCurrentTask(null)
+    }
+    const findIndex = taskList.findIndex((task) => task.id === id)
+    if(findIndex !== -1) {
+      taskList.splice(findIndex, 1)
+      const result = [...taskList]
+      setTaskList(result)
+    }
+  };
+
   return (
    <section className={style.todoList}>
     <TaskInput onEdit={handleEdit} currentTask={currentTask} value={task.taskName} onSubmit={handlesubmit} onGetTask={getTask}></TaskInput>
-    <TaskList isDone={false} onChangeCheck={handleChecked} onEditTask={handleStartEditTask} taskList={filterTaskNotDone}></TaskList>
-    <TaskList isDone={true} onChangeCheck={handleChecked}  onEditTask={handleStartEditTask} taskList={filterTaskDone}></TaskList>
+    <TaskList isDone={false} onChangeCheck={handleChecked} onDeleteTask={handleDeleteTask} onEditTask={handleStartEditTask} taskList={filterTaskNotDone}></TaskList>
+    <TaskList isDone={true} onChangeCheck={handleChecked} onDeleteTask={handleDeleteTask} onEditTask={handleStartEditTask} taskList={filterTaskDone}></TaskList>
    </section>
   )
 };
