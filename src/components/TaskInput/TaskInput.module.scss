@@ -1,0 +1,15 @@
+.taskInput {
+    margin-top: 1rem;
+    & .input {
+        border-radius: 9px;
+        padding-block: 10px;
+        width: 300px;
+        padding-left: 10px;
+        margin-right: 20px;
+        font-size: larger;
+    }
+    & .buttonAddTask {
+        padding-block: 10px;
+        padding-inline: 10px;
+    }
+}
